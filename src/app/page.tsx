@@ -108,11 +108,24 @@ export default function Home() {
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto p-4 space-y-6">
         <ProgressBar steps={3} currentStep={step} />
-       <div className="shadow-lg rounded-md p-4">
-       {step === 1 && <PersonalInfo />}
-        {step === 2 && <AddressInfo />}
-        {step === 3 && <AccountInfo />}
-       </div>
+        
+        <div className="shadow-lg rounded-md p-4">
+          <div
+            className={`transition-opacity duration-500 ${step === 1 ? 'opacity-100' : 'opacity-0'}`}
+          >
+            {step === 1 && <PersonalInfo />}
+          </div>
+          <div
+            className={`transition-opacity duration-500 ${step === 2 ? 'opacity-100' : 'opacity-0'}`}
+          >
+            {step === 2 && <AddressInfo />}
+          </div>
+          <div
+            className={`transition-opacity duration-500 ${step === 3 ? 'opacity-100' : 'opacity-0'}`}
+          >
+            {step === 3 && <AccountInfo />}
+          </div>
+        </div>
         
         {/* Alert Messages */}
         {alert && (
