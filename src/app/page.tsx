@@ -8,6 +8,8 @@ import ProgressBar from "@/components/Progressbar";
 import PersonalInfo from "@/components/PersonalInfo";
 import AddressInfo from "@/components/AddressInfo";
 import AccountInfo from "@/components/AccountInfo";
+import { Alert, AlertTitle, AlertDescription } from "@/components/ui/alert";
+import { AlertCircle, CheckCircle } from "lucide-react";
 
 const schema = z.object({
   name: z.string().min(1, "Name is required"),
@@ -31,6 +33,7 @@ type FormData = z.infer<typeof schema>;
 export default function Home() {
   const [step, setStep] = useState<number>(1);
   const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
+  const [alert, setAlert] = useState<{ type: "default" | "destructive"; message: string } | null>(null);
 
   const methods = useForm<FormData>({
     resolver: zodResolver(schema),
@@ -49,14 +52,31 @@ export default function Home() {
     },
   });
 
-  const { handleSubmit, trigger } = methods;
+  const { handleSubmit, trigger, reset } = methods;
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
     setIsSubmitting(true);
+    setAlert(null);
+
     try {
-      console.log(data);
-      // Simulate an API request
-      await new Promise((resolve) => setTimeout(resolve, 2000));
+      const response = await fetch("/api/submit", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(data),
+      });
+
+      if (response.ok) {
+        setAlert({ type: "default", message: "Form submitted successfully!" });
+        reset(); 
+        setStep(1);
+      } else {
+        throw new Error("Failed to submit form");
+      }
+    } catch (error) {
+      console.error(error);
+      setAlert({ type: "destructive", message: "An error occurred. Please try again." });
     } finally {
       setIsSubmitting(false);
     }
@@ -91,6 +111,21 @@ export default function Home() {
         {step === 1 && <PersonalInfo />}
         {step === 2 && <AddressInfo />}
         {step === 3 && <AccountInfo />}
+        
+        {/* Alert Messages */}
+        {alert && (
+          <Alert variant={alert.type} className="mt-4">
+            {alert.type === "destructive" ? (
+              <AlertCircle className="h-4 w-4" />
+            ) : (
+              <CheckCircle className="h-4 w-4" />
+            )}
+            <AlertTitle>{alert.type === "destructive" ? "Error" : "Success"}</AlertTitle>
+            <AlertDescription>{alert.message}</AlertDescription>
+          </Alert>
+        )}
+
+        {/* Button section */}
         <div className="flex justify-between">
           {step > 1 && <Button type="button" onClick={prevStep}>Previous</Button>}
           {step < 3 ? (
