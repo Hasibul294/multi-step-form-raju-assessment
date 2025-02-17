@@ -40,7 +40,7 @@ Start the server
   npm start
 ```
 
-After run the project you will find the complete task also with bonus 
+After run the project you will find the complete task also with bonus points.
 
 ## 🔗 Project live link
 
