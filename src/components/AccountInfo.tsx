@@ -1,5 +1,6 @@
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
+import { Checkbox } from "@/components/ui/checkbox";
 import { useFormContext } from "react-hook-form";
 import Typography from "./ui/Typography";
 
@@ -24,6 +25,14 @@ export default function AccountInfo() {
         <Label htmlFor="confirmPassword">Confirm Password</Label>
         <Input id="confirmPassword" type="password" {...register("confirmPassword", { required: "Confirm Password is required", validate: value => value === password || "Passwords do not match" })} />
         {errors.confirmPassword && <p className="text-red-500 text-xs">{String(errors.confirmPassword.message)}</p>}
+      </div>
+       {/* New Terms & Conditions Checkbox */}
+      <div>
+      <div className="flex items-center space-x-2">
+        <Checkbox {...register("terms")} id="terms" />
+        <Label htmlFor="terms">I accept the Terms & Conditions</Label>
+      </div>
+      {errors.terms && <p className="text-red-500 text-xs">{String(errors.terms.message)}</p>}
       </div>
     </div>
   );

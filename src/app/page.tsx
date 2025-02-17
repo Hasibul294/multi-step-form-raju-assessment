@@ -15,18 +15,27 @@ const schema = z.object({
   name: z.string().min(1, "Name is required"),
   email: z.string().email("Invalid email"),
   dob: z.string().min(1, "Date of Birth is required"),
+  phone: z.string().regex(/^\d{11}$/, "Phone number must be 11 digits"), // New field with custom validation
   address1: z.string().min(1, "Address Line 1 is required"),
   address2: z.string().optional(),
   city: z.string().min(1, "City is required"),
   state: z.string().min(1, "State is required"),
   zip: z.string().regex(/^\d{5}$/, "Invalid Zip Code (only support U.S format)"),
   username: z.string().min(1, "Username is required"),
-  password: z.string().min(1, "Password is required"),
+  password: z.string()
+    .min(8, "Password must be at least 8 characters")
+    .regex(/[A-Z]/, "Password must contain at least one uppercase letter")
+    .regex(/[a-z]/, "Password must contain at least one lowercase letter")
+    .regex(/\d/, "Password must contain at least one number"),
   confirmPassword: z.string().min(1, "Confirm Password is required"),
+  terms: z.boolean().refine(value => value === true, {
+    message: "You must accept the terms and conditions",
+  }), // New field with custom validation
 }).refine(data => data.password === data.confirmPassword, {
   message: "Passwords do not match",
   path: ["confirmPassword"],
 });
+
 
 type FormData = z.infer<typeof schema>;
 
@@ -41,6 +50,7 @@ export default function Home() {
       name: "",
       email: "",
       dob: "",
+      phone: "",  // Added phone number field
       address1: "",
       address2: "",
       city: "",
@@ -49,6 +59,7 @@ export default function Home() {
       username: "",
       password: "",
       confirmPassword: "",
+      terms: false, // Added terms checkbox
     },
   });
 
@@ -86,11 +97,11 @@ export default function Home() {
     let fieldsToValidate: Array<keyof FormData> = [];
 
     if (step === 1) {
-      fieldsToValidate = ["name", "email", "dob"];
+      fieldsToValidate = ["name", "email", "phone", "dob"];
     } else if (step === 2) {
       fieldsToValidate = ["address1", "city", "state", "zip"];
     } else if (step === 3) {
-      fieldsToValidate = ["username", "password", "confirmPassword"];
+      fieldsToValidate = ["username", "password", "confirmPassword", "terms"];
     }
 
     const isValid = await trigger(fieldsToValidate);

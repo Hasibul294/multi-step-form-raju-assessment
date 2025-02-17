@@ -19,6 +19,12 @@ export default function PersonalInfo() {
         <Input id="email" type="email" {...register("email", { required: "Email is required", pattern: { value: /^\S+@\S+$/i, message: "Invalid email" } })} />
         {errors.email && <p className="text-red-500 text-xs">{String(errors.email.message)}</p>}
       </div>
+      {/* New Phone Number Field */}
+      <div>
+        <Label>Phone Number</Label>
+        <Input {...register("phone")} />
+        {errors.phone && <p className="text-red-500 text-xs">{String(errors.phone.message)}</p>}
+      </div>
       <div>
         <Label htmlFor="dob">Date of Birth</Label>
         <Input id="dob" type="date" {...register("dob", { required: "Date of Birth is required" })} />
