@@ -108,9 +108,11 @@ export default function Home() {
     <FormProvider {...methods}>
       <form onSubmit={handleSubmit(onSubmit)} className="max-w-md mx-auto p-4 space-y-6">
         <ProgressBar steps={3} currentStep={step} />
-        {step === 1 && <PersonalInfo />}
+       <div className="shadow-lg rounded-md p-4">
+       {step === 1 && <PersonalInfo />}
         {step === 2 && <AddressInfo />}
         {step === 3 && <AccountInfo />}
+       </div>
         
         {/* Alert Messages */}
         {alert && (

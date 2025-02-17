@@ -12,17 +12,17 @@ export default function PersonalInfo() {
       <div>
         <Label htmlFor="name">Name</Label>
         <Input id="name" {...register("name", { required: "Name is required" })} />
-        {errors.name && <p className="text-red-500">{String(errors.name.message)}</p>}
+        {errors.name && <p className="text-red-500 text-xs">{String(errors.name.message)}</p>}
       </div>
       <div>
         <Label htmlFor="email">Email</Label>
         <Input id="email" type="email" {...register("email", { required: "Email is required", pattern: { value: /^\S+@\S+$/i, message: "Invalid email" } })} />
-        {errors.email && <p className="text-red-500">{String(errors.email.message)}</p>}
+        {errors.email && <p className="text-red-500 text-xs">{String(errors.email.message)}</p>}
       </div>
       <div>
         <Label htmlFor="dob">Date of Birth</Label>
         <Input id="dob" type="date" {...register("dob", { required: "Date of Birth is required" })} />
-        {errors.dob && <p className="text-red-500">{String(errors.dob.message)}</p>}
+        {errors.dob && <p className="text-red-500 text-xs">{String(errors.dob.message)}</p>}
       </div>
     </div>
   );

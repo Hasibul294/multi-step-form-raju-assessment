@@ -15,7 +15,7 @@ export default function AddressInfo() {
       <div>
         <Label htmlFor="address1">Address Line 1</Label>
         <Input id="address1" {...register("address1", { required: "Address Line 1 is required" })} />
-        {errors.address1 && <p className="text-red-500">{String(errors.address1.message)}</p>}
+        {errors.address1 && <p className="text-red-500 text-xs">{String(errors.address1.message)}</p>}
       </div>
       <div>
         <Label htmlFor="address2">Address Line 2</Label>
@@ -24,7 +24,7 @@ export default function AddressInfo() {
       <div>
         <Label htmlFor="city">City</Label>
         <Input id="city" {...register("city", { required: "City is required" })} />
-        {errors.city && <p className="text-red-500">{String(errors.city.message)}</p>}
+        {errors.city && <p className="text-red-500 text-xs">{String(errors.city.message)}</p>}
       </div>
       <div>
         <Label htmlFor="state">State</Label>
@@ -40,12 +40,12 @@ export default function AddressInfo() {
             ))}
           </SelectContent>
         </Select>
-        {errors.state && <p className="text-red-500">{String(errors.state.message)}</p>}
+        {errors.state && <p className="text-red-500 text-xs">{String(errors.state.message)}</p>}
       </div>
       <div>
         <Label htmlFor="zip">Zip Code</Label>
         <Input id="zip" {...register("zip", { required: "Zip Code is required", pattern: { value: /^\d{5}$/, message: "Invalid Zip Code" } })} />
-        {errors.zip && <p className="text-red-500">{String(errors.zip.message)}</p>}
+        {errors.zip && <p className="text-red-500 text-xs">{String(errors.zip.message)}</p>}
       </div>
     </div>
   );

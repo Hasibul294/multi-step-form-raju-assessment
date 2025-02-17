@@ -13,17 +13,17 @@ export default function AccountInfo() {
       <div>
         <Label htmlFor="username">Username</Label>
         <Input id="username" {...register("username", { required: "Username is required" })} />
-        {errors.username && <p className="text-red-500">{String(errors.username.message)}</p>}
+        {errors.username && <p className="text-red-500 text-xs">{String(errors.username.message)}</p>}
       </div>
       <div>
         <Label htmlFor="password">Password</Label>
         <Input id="password" type="password" {...register("password", { required: "Password is required" })} />
-        {errors.password && <p className="text-red-500">{String(errors.password.message)}</p>}
+        {errors.password && <p className="text-red-500 text-xs">{String(errors.password.message)}</p>}
       </div>
       <div>
         <Label htmlFor="confirmPassword">Confirm Password</Label>
         <Input id="confirmPassword" type="password" {...register("confirmPassword", { required: "Confirm Password is required", validate: value => value === password || "Passwords do not match" })} />
-        {errors.confirmPassword && <p className="text-red-500">{String(errors.confirmPassword.message)}</p>}
+        {errors.confirmPassword && <p className="text-red-500 text-xs">{String(errors.confirmPassword.message)}</p>}
       </div>
     </div>
   );
