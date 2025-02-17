@@ -17,7 +17,7 @@ const schema = z.object({
   address2: z.string().optional(),
   city: z.string().min(1, "City is required"),
   state: z.string().min(1, "State is required"),
-  zip: z.string().regex(/^\d{5}$/, "Invalid Zip Code (only support U.S formate)"),
+  zip: z.string().regex(/^\d{5}$/, "Invalid Zip Code (only support U.S format)"),
   username: z.string().min(1, "Username is required"),
   password: z.string().min(1, "Password is required"),
   confirmPassword: z.string().min(1, "Confirm Password is required"),
@@ -30,8 +30,8 @@ type FormData = z.infer<typeof schema>;
 
 export default function Home() {
   const [step, setStep] = useState<number>(1);
+  const [isSubmitting, setIsSubmitting] = useState<boolean>(false);
 
-  // provide default values
   const methods = useForm<FormData>({
     resolver: zodResolver(schema),
     defaultValues: {
@@ -52,13 +52,19 @@ export default function Home() {
   const { handleSubmit, trigger } = methods;
 
   const onSubmit: SubmitHandler<FormData> = async (data) => {
-    console.log(data);
-    // Handle API submission here
+    setIsSubmitting(true);
+    try {
+      console.log(data);
+      // Simulate an API request
+      await new Promise((resolve) => setTimeout(resolve, 2000));
+    } finally {
+      setIsSubmitting(false);
+    }
   };
 
   const nextStep = async () => {
     let fieldsToValidate: Array<keyof FormData> = [];
-  
+
     if (step === 1) {
       fieldsToValidate = ["name", "email", "dob"];
     } else if (step === 2) {
@@ -66,15 +72,13 @@ export default function Home() {
     } else if (step === 3) {
       fieldsToValidate = ["username", "password", "confirmPassword"];
     }
-  
+
     const isValid = await trigger(fieldsToValidate);
-  
+
     if (isValid) {
       setStep((prevStep) => prevStep + 1);
     }
   };
-  
-  
 
   const prevStep = () => {
     setStep(step - 1);
@@ -89,7 +93,13 @@ export default function Home() {
         {step === 3 && <AccountInfo />}
         <div className="flex justify-between">
           {step > 1 && <Button type="button" onClick={prevStep}>Previous</Button>}
-          {step < 3 ? <Button type="button" onClick={nextStep}>Next</Button> : <Button type="submit">Submit</Button>}
+          {step < 3 ? (
+            <Button type="button" onClick={nextStep}>Next</Button>
+          ) : (
+            <Button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? <span className="animate-spin border-2 border-white border-t-transparent rounded-full w-5 h-5"></span> : "Submit"}
+            </Button>
+          )}
         </div>
       </form>
     </FormProvider>
